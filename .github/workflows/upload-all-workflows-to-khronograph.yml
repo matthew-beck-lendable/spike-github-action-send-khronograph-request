@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-            workflow: ${{ fromJson(needs.list-manifests.outputs.matrix) }}
+            workflow: ${{ fromJson(needs.list-workflows.outputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3  
