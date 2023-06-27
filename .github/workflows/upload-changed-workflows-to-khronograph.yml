@@ -4,7 +4,8 @@ on:
   push:
     paths:
       - '*.json'
-    branches: [ main ]
+    branches:
+      - "main"
 
 jobs:
   list-workflows:
