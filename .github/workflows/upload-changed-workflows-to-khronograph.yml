@@ -3,7 +3,7 @@ name: upload-changed-workflows-to-khronograph.yml
 on:
   push:
     paths:
-      - '*.json'
+      - 'workflows/*.json'
     branches:
       - "main"
 
