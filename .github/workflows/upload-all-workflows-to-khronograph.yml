@@ -1,0 +1,35 @@
+name: upload-all-workflows-to-khronograph
+
+on:
+  workflow_dispatch:
+
+jobs:
+  list-workflows:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: set-matrix
+        run: echo "::set-output name=matrix::$(ls workflows/*.json | jq -R -s -c 'split("\n")[:-1]')"
+  check:
+    needs: list-workflows
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+            workflow: ${{ fromJson(needs.list-manifests.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3  
+        
+      - name: Echo file
+        run: |
+          echo ${{ matrix.workflow }} # to test if the correct file was passed
+          
+      - name: Upload workflows
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://www.google.com/'
+          method: 'POST'
+          customHeaders: '{"Content-Type": "application/json"}'
+          file: "${{ github.workspace }}/${{ matrix.workflow }}"
